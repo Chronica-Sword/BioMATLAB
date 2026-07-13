@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMATLAB | Biyoinformatik Kodlama Eğitimi</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo" onclick="app.navigate('home')">
+            <span class="icon">🧬</span> BioMATLAB
+        </div>
+        <div class="nav-links">
+            <button onclick="app.navigate('home')" class="nav-btn">Ana Sayfa</button>
+            <button onclick="app.navigate('levels')" class="nav-btn primary">Problemler</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main id="app-container">
+        <!-- Views will be injected here by JavaScript -->
+    </main>
+
+    <!-- Templates for Views -->
+    
+    <!-- Home View -->
+    <template id="view-home">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Biyoinformatik ve MATLAB'ı Birlikte Öğrenin</h1>
+                <p>Başlangıçtan ileri seviyeye kadar özel olarak hazırlanmış problemlerle, biyolojik verileri MATLAB/Octave kullanarak nasıl analiz edeceğinizi keşfedin.</p>
+                <div class="hero-buttons">
+                    <button class="btn-large primary" onclick="app.navigate('levels')">Öğrenmeye Başla</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="glass-card mockup">
+                    <div class="mockup-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <pre><code><span class="comment">% DNA'dan RNA'ya çeviri</span>
+dna = 'ATGCGTACGTCG';
+rna = strrep(dna, 'T', 'U');
+disp(rna);</code></pre>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Levels View -->
+    <template id="view-levels">
+        <div class="levels-container">
+            <h2 class="section-title">Zorluk Seviyenizi Seçin</h2>
+            <div class="cards-grid">
+                <!-- Beginner Card -->
+                <div class="level-card" onclick="app.loadLevel('beginner')">
+                    <div class="card-icon beginner-icon">🌱</div>
+                    <h3>Başlangıç</h3>
+                    <p>Temel string işlemleri, döngüler ve basit dizilim analizleri.</p>
+                    <div class="progress">20 Problem</div>
+                </div>
+                
+                <!-- Intermediate Card -->
+                <div class="level-card" onclick="app.loadLevel('intermediate')">
+                    <div class="card-icon intermediate-icon">🌿</div>
+                    <h3>Orta Seviye</h3>
+                    <p>Hizalama algoritmaları, matris işlemleri ve veri istatistikleri.</p>
+                    <div class="progress">20 Problem</div>
+                </div>
+
+                <!-- Advanced Card -->
+                <div class="level-card" onclick="app.loadLevel('advanced')">
+                    <div class="card-icon advanced-icon">🌳</div>
+                    <h3>Zor</h3>
+                    <p>Filogenetik analiz, veri görselleştirme ve kompleks algoritmalar.</p>
+                    <div class="progress">10 Problem</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Problem Viewer View -->
+    <template id="view-problem">
+        <div class="problem-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="problem-sidebar">
+                <div class="sidebar-header">
+                    <button class="back-btn" onclick="app.navigate('levels')">← Geri</button>
+                    <h3 id="sidebar-level-title">Seviye</h3>
+                </div>
+                <div class="problem-list" id="problem-list">
+                    <!-- List items will be injected here -->
+                </div>
+            </aside>
+
+            <!-- Main Problem Area -->
+            <div class="problem-content">
+                <div class="problem-header">
+                    <h2 id="problem-title">Problem Başlığı</h2>
+                </div>
+                
+                <div class="problem-description glass-panel" id="problem-description">
+                    <!-- Description injected here -->
+                </div>
+
+                <div class="editor-section">
+                    <div class="editor-header">
+                        <span>Çözümünüzü Yazın (Octave/MATLAB)</span>
+                        <div class="editor-actions" style="display: flex; gap: 0.5rem;">
+                            <button class="btn secondary" onclick="app.toggleSolution()">Çözümü ve Çıktıyı Göster</button>
+                            <button class="btn primary" onclick="app.toggleExplanation()">📖 Çözümü Anlat</button>
+                        </div>
+                    </div>
+                    <!-- Simple text area acting as editor for offline mode -->
+                    <textarea id="code-editor" class="code-editor" spellcheck="false"></textarea>
+                </div>
+
+                <!-- Explanation Panel (Hidden by default) -->
+                <div id="explanation-panel" class="explanation-panel hidden glass-panel textbook-style">
+                    <h3>📚 Konu Anlatımı ve Çözüm Yaklaşımı</h3>
+                    <div id="solution-explanation" class="textbook-content">
+                        <!-- Explanation injected here -->
+                    </div>
+                </div>
+
+                <!-- Solution & Output Panel (Hidden by default) -->
+                <div id="solution-panel" class="solution-panel hidden glass-panel">
+                    <h3>Örnek Çözüm</h3>
+                    <pre><code id="solution-code" class="language-matlab"></code></pre>
+                    
+                    <h3 class="output-title">Beklenen Çıktı</h3>
+                    <pre class="output-block"><code id="solution-output"></code></pre>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
